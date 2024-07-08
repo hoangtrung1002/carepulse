@@ -1,19 +1,19 @@
 "use client";
 
 import { Form, FormControl } from "@/components/ui/form";
-import CustomFormField from "../CustomFormField";
-import SubmitButton from "../SubmitButton";
-import usePatientForm from "@/hooks/usePatientForm";
-import { FormFieldType } from "./PatientForm";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Doctors, GenderOptions, IdentificationTypes } from "@/constants";
-import { Label } from "../ui/label";
-import { SelectItem } from "../ui/select";
+import useRegisterForm from "@/hooks/useRegisterForm";
 import Image from "next/image";
+import CustomFormField from "../CustomFormField";
 import FileUploader from "../FileUploader";
+import SubmitButton from "../SubmitButton";
+import { Label } from "../ui/label";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { SelectItem } from "../ui/select";
+import { FormFieldType } from "./PatientForm";
 
 const RegisterForm = ({ user }: { user: User }) => {
-  const { form, isLoading, onSubmit } = usePatientForm();
+  const { form, isLoading, onSubmit } = useRegisterForm(user);
 
   return (
     <Form {...form}>
