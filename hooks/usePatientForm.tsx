@@ -1,4 +1,4 @@
-import { createUser } from "@/lib/actions/partient.action";
+import { createUser } from "@/lib/actions/patient.action";
 import { UserFormValidation } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
