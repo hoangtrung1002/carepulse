@@ -61,7 +61,7 @@ const useAppointmentForm = ({ type = "create", patientId, userId }: Props) => {
         if (appointment) {
           form.reset();
           router.push(
-            `/patients/${patientId}/appointments/success?appointmentId=${appointment.$id}`
+            `/patients/${patientId}/new-appointment/success?appointmentId=${appointment.$id}`
           );
         }
       }
