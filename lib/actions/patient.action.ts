@@ -50,11 +50,13 @@ export const getPatient = async (userId: string) => {
       PATIENT_COLLECTION_ID!,
       [Query.equal("userId", [userId])]
     );
-    console.log(parseStringify(patients.documents[0]));
 
     return parseStringify(patients.documents[0]);
   } catch (error) {
-    console.log(error);
+    console.error(
+      "An error occurred while retrieving the patient details:",
+      error
+    );
   }
 };
 
