@@ -1,6 +1,6 @@
 import PatientForm from "@/components/forms/PatientForm";
 import RegisterForm from "@/components/forms/RegisterForm";
-import { getUser } from "@/lib/actions/partient.action";
+import { getUser } from "@/lib/actions/patient.action";
 import Image from "next/image";
 import Link from "next/link";
 

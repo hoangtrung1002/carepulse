@@ -1,5 +1,5 @@
 import { PatientFormDefaultValues } from "@/constants";
-import { createUser, registerPatient } from "@/lib/actions/partient.action";
+import { registerPatient } from "@/lib/actions/patient.action";
 import { PatientFormValidation } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
