@@ -1,4 +1,8 @@
-import { createAppointment } from "@/lib/actions/appointment.action";
+import { AppointmentProps } from "@/components/forms/AppointmentForm";
+import {
+  createAppointment,
+  updateAppointment,
+} from "@/lib/actions/appointment.action";
 import { getAppointmentSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -6,13 +10,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-interface Props {
-  type: "cancel" | "create" | "schedule";
-  patientId: string;
-  userId: string;
-}
-
-const useAppointmentForm = ({ type = "create", patientId, userId }: Props) => {
+const useAppointmentForm = ({
+  type = "create",
+  patientId,
+  userId,
+  appointment,
+  setOpen,
+}: AppointmentProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
@@ -22,11 +26,13 @@ const useAppointmentForm = ({ type = "create", patientId, userId }: Props) => {
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
     resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
-      primaryPhysician: "",
-      schedule: new Date(),
-      reason: "",
-      note: "",
-      cancellationReason: "",
+      primaryPhysician: appointment ? appointment.primaryPhysician : "",
+      schedule: appointment
+        ? new Date(appointment.schedule)
+        : new Date(Date.now()),
+      reason: appointment ? appointment.reason : "",
+      note: appointment?.note || "",
+      cancellationReason: appointment?.cancellationReason || "",
     },
   });
 
@@ -63,6 +69,25 @@ const useAppointmentForm = ({ type = "create", patientId, userId }: Props) => {
           router.push(
             `/patients/${patientId}/new-appointment/success?appointmentId=${appointment.$id}`
           );
+        }
+      } else {
+        const appointmentToUpdate = {
+          userId,
+          appointmentId: appointment?.$id!,
+          appointment: {
+            primaryPhysician: values.primaryPhysician,
+            schedule: new Date(values?.schedule),
+            status: status as Status,
+            cancellationReason: values?.cancellationReason,
+          },
+          type,
+        };
+
+        const updatedAppointment = await updateAppointment(appointmentToUpdate);
+
+        if (updatedAppointment) {
+          setOpen && setOpen(false);
+          form.reset();
         }
       }
     } catch (error) {

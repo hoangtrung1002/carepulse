@@ -1,25 +1,35 @@
 "use client";
 import { Form } from "@/components/ui/form";
+import { Doctors } from "@/constants";
+import useAppointmentForm from "@/hooks/useAppointmentForm";
+import { Appointment } from "@/types/appwrite.types";
+import Image from "next/image";
 import CustomFormField from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
-import usePatientForm from "@/hooks/usePatientForm";
-import { FormFieldType } from "./PatientForm";
 import { SelectItem } from "../ui/select";
-import { Doctors } from "@/constants";
-import Image from "next/image";
-import useAppointmentForm from "@/hooks/useAppointmentForm";
+import { FormFieldType } from "./PatientForm";
 
-interface AppointmentProps {
+export interface AppointmentProps {
   type: "create" | "cancel" | "schedule";
   patientId: string;
   userId: string;
+  appointment?: Appointment;
+  setOpen: (open: boolean) => void;
 }
 
-const AppointmentForm = ({ patientId, type, userId }: AppointmentProps) => {
+const AppointmentForm = ({
+  patientId,
+  type,
+  userId,
+  appointment,
+  setOpen,
+}: AppointmentProps) => {
   const { form, isLoading, onSubmit } = useAppointmentForm({
     type,
     patientId,
     userId,
+    appointment,
+    setOpen,
   });
 
   let buttonLabel;
@@ -40,12 +50,14 @@ const AppointmentForm = ({ patientId, type, userId }: AppointmentProps) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-1">
-        <section className="mb-12 space-y-4">
-          <h1>New Appointment</h1>
-          <p className="text-dark-700">
-            Request a new appointment in 10 seconds
-          </p>
-        </section>
+        {type === "create" && (
+          <section className="mb-12 space-y-4">
+            <h1>New Appointment</h1>
+            <p className="text-dark-700">
+              Request a new appointment in 10 seconds
+            </p>
+          </section>
+        )}
 
         {type !== "cancel" && (
           <>
